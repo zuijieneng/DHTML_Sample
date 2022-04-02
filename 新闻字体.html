@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新闻</title>
+	<style type="text/css">
+		#top{
+			width: 80%;
+			height: 100px;
+			border:1px solid;
+			text-indent: 20px;	 /*首行缩进20px*/
+			margin-left: 10%;
+			margin-top: 10px;
+			padding:10px 20px;
+		}
+		#cla{
+			width: 50px;
+			height: 50px;
+			float: left;
+			margin-left:20%;
+		}
+		hr{
+			width: 90%;
+			height: 5px;
+			background-color: purple;
+			border:2px solid yellow;
+			background-position: center;
+			clear:both; /*清除float*/
+		}
+		
+	</style>
+</head>
+<body>
+	<div id="top">
+		4月1日晚，习近平主席在北京以视频方式会见欧洲理事会主席米歇尔和欧盟委员会主席冯德莱恩。这是双方时隔15个月之后再次视频会见。 习主席曾说，中欧作为世界两大力量、两大市场、两大文明，主张什么、反对什么、合作什么，具有世界意义。在当前复杂严峻的国际局势之下，更是如此。 这次视频会见谈了些什么？
+	</div>
+	<hr>
+	<div id="cla" style="background-color: pink"></div>
+	<div id="cla" style="background-color: #aaaf"></div>
+	<div id="cla" style="background-color: #ffcc"></div>
+	<hr>
+	
+	<!--点击颜色块，实现div:top的文本变色/背景变色，具体查看Dhtml的style对象的样式，这里我选择背景变色（明显）-->
+	<script type="text/javascript">
+		//文档加载完
+		window.onload=function(){
+			//获取所有的名为cla的div集合
+			var cla = document.getElementsByTagName("div");
+			//获取id为top的div
+			var top = document.getElementById("top");
+			//循环遍历，为每个div绑定点击事件，即一旦点击就会发生变色
+			for(var i=0;i<cla.length;i++){ //cla.length=4
+				if(cla[i].id=="cla"){ 
+					//绑定点击事件
+					cla[i].onclick=function(){
+						top.style.backgroundColor=this.style.backgroundColor;
+					}
+				}
+
+			}
+		}
+	</script>
+	<!--DIV的事件onmouseover，实现鼠标移动到对应的颜色块，使得变色-->
+	<script type="text/javascript">
+		window.onload=function(){
+			var cla = document.getElementsByTagName("div");
+			var top = document.getElementById("top");
+
+			for(var i=0;i<cla.length;i++){
+				if(cla[i].id!="top"){
+					cla[i].onmouseover=function(){
+						top.style.backgroundColor=this.style.backgroundColor;
+					}
+				}
+			}
+
+		}
+	</script>
+	<!--DIV的事件onmouseout，实现当用户将鼠标指针移出象边界时触发，使得变色-->
+	<script type="text/javascript">
+		window.onload=function(){
+			var cla = document.getElementsByTagName("div");
+			var top = document.getElementById("top");
+
+			for(var i=0;i<cla.length;i++){
+				if(cla[i].id!="top"){
+					cla[i].onmouseout=function(){
+						top.style.backgroundColor=this.style.backgroundColor;
+					}
+				}
+			}
+
+		}
+	</script>
+	
+	<!--Input对象的事件onfocus,实现获得焦点时候(点进去就会聚焦)，触发”改变top的文字大小“-->
+	<p style="margin:40px 10%;">请设置文本大小：<input type="text" name="input_onfocus" value="10" />px</p>
+	<script type="text/javascript">
+		window.onload=function(){
+			//获取名为input_onfocus的集合的第一个input标签对象
+			var input_onfocus = document.getElementsByName("input_onfocus")[0]; 
+			//获取top对象
+			var top = document.getElementById("top");
+			//绑定事件
+			input_onfocus.onfocus=function(){
+				//注意input标签的属性是直接设置，div是通过style再设置
+				top.style.fontSize = input_onfocus.value+"px";
+			}
+		}
+	</script>
+
+	<!--Input对象的事件onblur，实现在对象失去输入焦点时触发（输入完后移出框），改变字体大小-->
+	<p style="margin:40px 10%;">请设置文本大小：<input type="text" name="input_onblur"  />px</p>
+	<script type="text/javascript">
+		window.onload=function(){
+			var input_onblur =document.getElementsByName("input_onblur")[0];
+			var top = document.getElementById("top");
+			input_onblur.onblur=function(){
+				top.style.fontSize = input_onblur.value+"px";
+			}
+
+		}
+	</script>
+
+	<!--Select对象的onchange事件，实现选中option后改变top（div）的文本颜色-->
+	<p style="margin:40px 10%;">请选择文本颜色：
+	<select name="selectname">
+		<option value="red" selected="selected">红色</option>
+		<option value="blue">蓝色</option>
+		<option value="purple">紫色</option>
+	</select>
+	</p>
+	<script type="text/javascript">
+		 var selectname = document.getElementsByName("selectname")[0];
+		 selectname.onchange=function(){
+		 	document.getElementById("top").style.color=this.value;
+		 }
+	</script>
+
+	<!--点击事件，实现点击+，字号+1且span的文本内容+1，反之同理-->
+	 <p style="margin:40px 10%;">设置文字大小:
+        <input type="button" name="button_font" value="-"/>
+		<span  id="span_font">14px</span>
+	    <input type="button" name="button_font" value="+"/>
+	</p>
+	 <script type="text/javascript">
+	 		//获取Span对象
+			 var  oSpan=document.getElementById("span_font");
+			 //获取集合
+			 var  cobutton=document.getElementsByName("button_font"); 
+			 for(var i=0;i<cobutton.length;i++){
+			 	//每个进行点击事件的绑定
+			     cobutton[i].onclick=function(){
+				       //获取span的文本内容
+					   var  text=oSpan.innerText;
+					   //14px,截取到p
+					   var  fontSize=text.substring(0,text.length-2);
+					   var  value=this.value;
+					   if(value=="+"){
+					         fontSize++;
+					   }else if(fontSize>1){
+						     fontSize--;
+					   }
+					   //同时设置span的文本内容
+					   oSpan.innerText=fontSize+"px";
+					   document.getElementById("top").style.fontSize=fontSize+"px";
+				 }
+			 }
+	 </script>
+</body>
+</html>
