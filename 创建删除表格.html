@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>表格删除与创建</title>
+	<style type="text/css">
+		table{
+			    width:1000px;
+				border: 1px solid blue;
+				margin:10px auto;
+				border-collapse:collapse;/*合并相邻单元格之间的边框*/
+			}
+		table td{
+			   padding:3px;
+			   border: 1px solid blue;
+			   text-align:center;
+			   font-size:20px;
+			}
+	</style>
+</head>
+<body>
+	<!--样式,min-height:变量高度-->
+	<div id="top" style="width: 100%;min-height:100px;border: 2px solid purple">
+
+	</div>
+	<p style="margin-left: 30%; text-decoration-color:blue ">
+		输入行数：
+		<input type="text" name="input_create_hang"/>
+	</p>
+	<p style="margin-left: 30%; text-decoration-color:blue ">
+		输入列数：
+		<input type="text" name="input_create_lie"/>
+		<input type="button" name="button_create" value="创建表">
+	</p>
+	<hr style="color: red; width: 100%">
+	<p style="margin-left: 30%; text-decoration-color:blue ">
+		删除行数：
+		<input type="text" name="input_delete_hang"/>
+		<input type="button" name="button_delete_hang" value="删除行">
+	</p>
+	<p style="margin-left: 30%; text-decoration-color:blue ">
+		删除列数：
+		<input type="text" name="input_delete_lie"/>
+		<input type="button" name="button_delete_lie" value="删除列">
+	</p>
+	<!--表格JS实现-->
+
+	<script type="text/javascript">
+		
+		window.onload=function(){
+			var top = document.getElementById("top");
+			var input_create_hang = document.getElementsByName("input_create_hang")[0];
+			var input_create_lie = document.getElementsByName("input_create_lie")[0];
+			var input_delete_hang = document.getElementsByName("input_delete_hang")[0];
+			var input_delete_lie = document.getElementsByName("input_delete_lie")[0];
+			var button_create = document.getElementsByName("button_create")[0];
+			var button_delete_hang = document.getElementsByName("button_delete_hang")[0];
+			var button_delete_lie = document.getElementsByName("button_delete_lie")[0];
+
+			// alert(button_delete_hang.name);测试是否获取到
+			
+			//为创建按钮绑定点击事件
+			button_create.onclick=function(){ 
+				//必须放在点击函数里面，出发点击事件要重新获取行，列
+				var chang=input_create_hang.value;
+				var clie =input_create_lie.value;
+				//创建表格对象
+				var tab = document.createElement("table");
+				//为表格设置id号，以便于后续对这个table表进行删除操作
+				tab.id="tab_table";
+				//判断输入框是否为空,字符串的判断不是是否为null
+				if(chang==""||clie==""){
+					alert("不输入值怎么创建啊！");
+				}
+				//根据获取input的value值得到要创建的行与列
+				for(var i=0;i<chang;i++){
+					//创建行，循环几次创建多少行
+					var ttr=document.createElement("tr");
+					for(var j=0;j<clie;j++){
+						//创建列，循环几次创建多少列
+						var ttd=document.createElement("td");
+						//设置td内容
+						ttd.innerText=(i+1)+"行"+(j+1)+"列";
+						//td添加到tr中
+						ttr.appendChild(ttd);
+					}
+					//将tr添加到table中
+					tab.appendChild(ttr);
+				}
+				//先把top这个div清空，之后再添加(每次点击就相当于重新创建表格)
+				top.innerHTML="";
+				//将表格对象添加到top这个div中
+				top.appendChild(tab);
+			}
+
+			//为删除按钮创建点击事件
+			button_delete_hang.onclick=function(){
+				//根据input对象获取value，要删除的行
+				var dhang=input_delete_hang.value;
+				//获取id号为tab_table的table表格对象
+				var tab = document.getElementById("tab_table");
+				//获取现存的tr的个数。为的是后续删除时候进行比较
+				var tr_collection= document.getElementsByTagName("tr");
+				//判断输入框是否为空,表格空无法删除，表格的行不够删无法删除
+				if(dhang==""){
+					alert("请输入要删除的行数！");
+				}else if(tab==null||tab==undefined){
+					alert("表格不存在，无法删除！");
+				}else if(tr_collection.length<dhang){
+					alert("只有"+tr_collection.length+"行，"+"现存的'行'不够你删啊！");
+					return;
+				}
+				//到这，就可以删除了
+				var length = tr_collection.length;
+				for(var i=0;i<dhang;i++){
+					//从下往上删除
+					tab.removeChild(tr_collection[length-i-1]);
+				}
+			}
+
+			//为删除按钮创建点击事件
+			button_delete_lie.onclick=function(){
+				//根据input对象获取value，要删除的列
+				var dlie=input_delete_lie.value;
+				//获取id号为tab_table的table表格对象
+				var tab = document.getElementById("tab_table");
+				//判断输入框是否为空
+				if(dlie==""){
+					alert("请输入要删除的列数！");
+				}else if(tab==null||tab==undefined){
+					alert("表格不存在，无法删除！");
+				}
+				//获取现存的tr的个数,根据每个tr获取td个数,不能直接document获取，否则获取的是所有td（单元格）
+				var tr_collection= document.getElementsByTagName("tr");
+				//获取第一行的列数，以便于下面判断
+				var td_count = tr_collection[0].getElementsByTagName("td");
+				//判断输入框是否为空，表格空无法删除，表格的行不够删无法删除
+				if(tr_collection.length==0){
+					alert("行删完了！列无法删除!");
+				}else if(td_count.length<dlie){
+					alert("只有"+td_count.length+"列，"+"现存的'列'不够你删啊！");
+					return;
+				}
+				for(var i=0;i<tr_collection.length;i++){
+					//获取第一个tr对象
+					var tr_tr = tr_collection[i];
+					//这个tr对象的td集合
+					var td_tdcollections = tr_tr.getElementsByTagName("td");
+					//获取列长度
+					var length = td_tdcollections.length;
+					//一个tr一个tr的删除td，每个tr删除dlie个td
+					for(var j=0;j<dlie;j++){
+						//从右往左删除
+						tr_tr.removeChild(td_tdcollections[length-j-1]);
+					}
+				}
+			}
+		}
+	</script>
+</body>
+</html>
