@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>登录界面</title>
+</head>
+<body>
+	 <div style="width: 100%;height: 300px;margin-top: 8%;margin-left: 40%" >
+	 	<form action="" method="post">
+  		<input type="text" name="tname" style="width: 200px;height: 30px;font-size: 20px;margin-top:5%;border-radius:10px">
+  		<br>
+  		<div style="width: 100%;height: 10px"></div>
+  		<input type="text" name="tpwd" style="width: 200px;height: 30px;font-size: 20px;border-radius:10px">
+  		<font style="width:100px; font-size:10px; color: grey">* 数字，字母，_或#组成</font>
+  		<br><br>
+  		&nbsp; &nbsp;&nbsp; &nbsp;
+  		<input type="submit" name="logon" value="登录" style="border-radius:35px;width: 150px;height: 30px"><br>
+  		&nbsp; &nbsp;&nbsp; &nbsp;
+  		<input type="submit" name="register" value="注册" style="border-radius:35px;width: 150px;height: 30px">
+  		</form>
+	 </div> 
+	 <script type="text/javascript">
+	 		window.onload=function(){
+	 			var uform=document.getElementsByTagName("form")[0];
+		 		var uname = document.getElementsByName("tname")[0];
+				var upwd = document.getElementsByName("tpwd")[0];
+		 		var logon =  document.getElementsByName("logon")[0];
+		 		var register =  document.getElementsByName("register")[0];
+
+		 		//正则表达式判断密码,onkeyup事件是一边输入一边验证
+		 		upwd.onkeyup=function(){
+		 			//字母，数字，下划线和#组成
+		 			var regexp=/^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[_#]).{8,}$/; 
+		 			var font = document.getElementsByTagName("font")[0];
+		 			if(!regexp.test(this.value)){
+		 				//边框设为红色
+		 				this.style.borderColor ="red";
+		 				font.innerText="数字字母特殊字符组成，且至少8位...";
+		 				font.style.color="red";
+		 			}else{
+		 				this.style.borderColor="";
+		 				font.innerText="";
+		 				return 0;
+		 			}
+		 		}
+		 		logon.onclick=function(){
+		 			uform.action="/java40_web/login";
+		 			alert(uform.action);
+		 		}
+		 		//如果点击了注册按钮，给action重新赋值
+		 		register.onclick=function(){
+		 			uform.action="/java40_web/Register";
+		 			alert(uname.value+upwd.value);
+		 		}
+	 		}
+	 </script>
+</body>
+</html>
